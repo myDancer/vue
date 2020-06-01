@@ -79,6 +79,7 @@ export default class Watcher {
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
+      // 得到一个function，解析对象的方法，
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
         this.getter = noop
@@ -103,6 +104,7 @@ export default class Watcher {
     let value
     const vm = this.vm
     try {
+      // value是受监听的对象
       value = this.getter.call(vm, vm)
     } catch (e) {
       if (this.user) {
@@ -130,7 +132,8 @@ export default class Watcher {
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id)
       this.newDeps.push(dep)
-      if (!this.depIds.has(id)) {
+      // 如果没有id这是订阅者
+      if (!this.depIds.has(id)) { 
         dep.addSub(this)
       }
     }
@@ -176,8 +179,11 @@ export default class Watcher {
    * Scheduler job interface.
    * Will be called by the scheduler.
    */
+
+  // 执行cb，并且返回newValue和oldValue
   run () {
     if (this.active) {
+      // value是受监听的对象
       const value = this.get()
       if (
         value !== this.value ||

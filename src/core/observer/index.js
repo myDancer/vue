@@ -34,6 +34,8 @@ export function toggleObserving (value: boolean) {
  * object's property keys into getter/setters that
  * collect dependencies and dispatch updates.
  */
+
+ // 每一个被观察的对象都有自己的dep
 export class Observer {
   value: any;
   dep: Dep;
@@ -52,6 +54,7 @@ export class Observer {
       }
       this.observeArray(value)
     } else {
+      // 遍历对象（第一层对象），将对象转为访问器属性
       this.walk(value)
     }
   }
@@ -112,6 +115,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
     return
   }
   let ob: Observer | void
+  // 如果已经是被观察对象，则直接返回，否则初始化。
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
     ob = value.__ob__
   } else if (
@@ -121,6 +125,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
     Object.isExtensible(value) &&
     !value._isVue
   ) {
+    // 调用Observer构造器，返回一个Observer实例
     ob = new Observer(value)
   }
   if (asRootData && ob) {
@@ -139,6 +144,7 @@ export function defineReactive (
   customSetter?: ?Function,
   shallow?: boolean
 ) {
+  // 新建一个发布者，用于收集依赖
   const dep = new Dep()
 
   const property = Object.getOwnPropertyDescriptor(obj, key)
@@ -152,7 +158,7 @@ export function defineReactive (
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key]
   }
-
+  // 如果不是浅层的，递归调用，将所有子对象初始化成发布订阅模式
   let childOb = !shallow && observe(val)
   Object.defineProperty(obj, key, {
     enumerable: true,
@@ -160,7 +166,9 @@ export function defineReactive (
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
       if (Dep.target) {
+        // 收集依赖
         dep.depend()
+        // 如果有子对象，则子对象也收集
         if (childOb) {
           childOb.dep.depend()
           if (Array.isArray(value)) {
@@ -187,7 +195,9 @@ export function defineReactive (
       } else {
         val = newVal
       }
+      // 如果设置新值，则重新初始化观察者
       childOb = !shallow && observe(newVal)
+      // 当data属性值变化的时候，就会通过 dep.notify 循环调用所有收集的Watch对象中的回调函数：
       dep.notify()
     }
   })

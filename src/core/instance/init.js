@@ -35,6 +35,7 @@ export function initMixin (Vue: Class<Component>) {
       // internal component options needs special treatment.
       initInternalComponent(vm, options)
     } else {
+      // 合并参数选项
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
@@ -89,10 +90,10 @@ export function initInternalComponent (vm: Component, options: InternalComponent
     opts.staticRenderFns = options.staticRenderFns
   }
 }
-
+// Ctor => Vue Constructor
 export function resolveConstructorOptions (Ctor: Class<Component>) {
-  let options = Ctor.options
-  if (Ctor.super) {
+  let options = Ctor.options // 相当于Vue.options
+  if (Ctor.super) { // 如果有父对象，找到父对象的options
     const superOptions = resolveConstructorOptions(Ctor.super)
     const cachedSuperOptions = Ctor.superOptions
     if (superOptions !== cachedSuperOptions) {

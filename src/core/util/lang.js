@@ -35,11 +35,13 @@ export function parsePath (path: string): any {
   if (bailRE.test(path)) {
     return
   }
+  // path => 'a.b.c.e'  , segments => [a,b,c,e]
   const segments = path.split('.')
   return function (obj) {
     for (let i = 0; i < segments.length; i++) {
       if (!obj) return
       obj = obj[segments[i]]
+      // obj = obj.a  -> obj = obj.a.b -> obj = obj.a.b.c
     }
     return obj
   }
