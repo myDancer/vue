@@ -13,7 +13,7 @@ const idToTemplate = cached(id => {
   const el = query(id)
   return el && el.innerHTML
 })
-
+// 缓存了来自 web-runtime.js 的 $mount 方法
 const mount = Vue.prototype.$mount
 Vue.prototype.$mount = function (
   el?: string | Element,
@@ -31,6 +31,7 @@ Vue.prototype.$mount = function (
 
   const options = this.$options
   // resolve template/el and convert to render function
+  // 尝试将template转换成render方法
   if (!options.render) {
     let template = options.template
     if (template) {
@@ -54,6 +55,7 @@ Vue.prototype.$mount = function (
         return this
       }
     } else if (el) {
+      // 获取当前dom元素及其子元素的html字符串
       template = getOuterHTML(el)
     }
     if (template) {
@@ -86,6 +88,8 @@ Vue.prototype.$mount = function (
  * Get outerHTML of elements, taking care
  * of SVG elements in IE as well.
  */
+
+ // 获取当前dom元素及其子元素的html字符串
 function getOuterHTML (el: Element): string {
   if (el.outerHTML) {
     return el.outerHTML

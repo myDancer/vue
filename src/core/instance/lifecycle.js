@@ -144,6 +144,8 @@ export function mountComponent (
   hydrating?: boolean
 ): Component {
   vm.$el = el
+  // 如果没有render选项
+  // 因为runtime-with-compiler已经判断过是否有render参数了，所以这里如果没有render的话，肯定是runtime-only的
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode
     if (process.env.NODE_ENV !== 'production') {

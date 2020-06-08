@@ -2,6 +2,7 @@
 
 import { parse } from './parser/index'
 import { optimize } from './optimizer'
+// codegen是用来将抽象语法树(AST)生成render函数
 import { generate } from './codegen/index'
 import { createCompilerCreator } from './create-compiler'
 
