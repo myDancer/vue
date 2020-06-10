@@ -162,7 +162,7 @@ export function createPatchFunction (backend) {
           )
         }
       }
-
+      // 创建真实dom
       vnode.elm = vnode.ns
         ? nodeOps.createElementNS(vnode.ns, tag)
         : nodeOps.createElement(tag, vnode)
@@ -188,10 +188,12 @@ export function createPatchFunction (backend) {
           insert(parentElm, vnode.elm, refElm)
         }
       } else {
+        // 创建child，子节点可能是数组，然后遍历数组，递归调用创建真实dom
         createChildren(vnode, children, insertedVnodeQueue)
         if (isDef(data)) {
           invokeCreateHooks(vnode, insertedVnodeQueue)
         }
+        // 插入真实dom
         insert(parentElm, vnode.elm, refElm)
       }
 

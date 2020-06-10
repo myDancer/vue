@@ -3,13 +3,15 @@
 import { extend } from 'shared/util'
 import { detectErrors } from './error-detector'
 import { createCompileToFunctionFn } from './to-function'
-
+// baseCompile 是透传过来的function
 export function createCompilerCreator (baseCompile: Function): Function {
+  //baseOptions是options文件中export出来的
   return function createCompiler (baseOptions: CompilerOptions) {
     function compile (
       template: string,
       options?: CompilerOptions
     ): CompiledResult {
+      // Object.create()方法创建一个新对象，使用现有的对象来提供新创建的对象的__proto__。返回一个新对象，带着指定的原型对象和属性。
       const finalOptions = Object.create(baseOptions)
       const errors = []
       const tips = []

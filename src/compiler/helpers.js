@@ -214,7 +214,7 @@ export function getAndRemoveAttrByRegex (
     }
   }
 }
-
+// 给item增加start和end属性
 function rangeSetItem (
   item: any,
   range?: { start?: number, end?: number }

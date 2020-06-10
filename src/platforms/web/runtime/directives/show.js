@@ -3,6 +3,7 @@
 import { enter, leave } from '../modules/transition'
 
 // recursively search for possible transition defined inside the component root
+// 递归遍历，找到是否有transition属性，也就是transition内置组件
 function locateNode (vnode: VNode): VNodeWithData {
   return vnode.componentInstance && (!vnode.data || !vnode.data.transition)
     ? locateNode(vnode.componentInstance._vnode)
